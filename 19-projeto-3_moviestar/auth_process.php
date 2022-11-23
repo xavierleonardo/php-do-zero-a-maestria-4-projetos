@@ -49,17 +49,17 @@ if ($type === "register") {
       } else {
 
         // Enviar uma msg de erro, usuário já existe
-        $message->setMessage("Usuário já cadastrado, tente outro e-mail.", "error", "back");
+        Message::setMessage("Usuário já cadastrado, tente outro e-mail.", "error", "back");
       }
     } else {
 
       // Enviar uma msg de erro, de senhas não batem
-      $message->setMessage("As senhas não são iguais.", "error", "back");
+      Message::setMessage("As senhas não são iguais.", "error", "back");
     }
   } else {
 
     // Enviar uma msg de erro, de dados faltantes
-    $message->setMessage("Por favor, preencha todos os campos.", "error");
+    Message::setMessage("Por favor, preencha todos os campos.", "error");
     header('Location: ' . $_SERVER['HTTP_REFERER']);
   }
 } else if ($type === "login") {
@@ -70,14 +70,14 @@ if ($type === "register") {
   // Tenta autenticar usuário
   if ($userDao->authenticateUser($email, $password)) {
 
-    $message->setMessage("Seja bem-vindo!", "success", "editprofile.php");
+    Message::setMessage("Seja bem-vindo!", "success", "editprofile.php");
 
     // Redireciona o usuário, caso não conseguir autenticar
   } else {
 
-    $message->setMessage("Usuário e/ou senha incorretos.", "error", "back");
+    Message::setMessage("Usuário e/ou senha incorretos.", "error", "back");
   }
 } else {
 
-  $message->setMessage("Informações inválidas!", "error", "index.php");
+  Message::setMessage("Informações inválidas!", "error", "index.php");
 }
