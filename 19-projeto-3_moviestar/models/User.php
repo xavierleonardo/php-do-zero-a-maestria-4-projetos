@@ -18,6 +18,6 @@ interface UserDAOInterface {
   public function verifyToken($protected = false);
   public function setTokenToSession($token, $redirect = true);
   public function authenticateUser($email, $password);
-  public function fundByEmail($email);
+  public function findByEmail($email);
   public function changePassword(User $user);
 }

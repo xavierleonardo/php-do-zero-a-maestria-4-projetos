@@ -8,14 +8,13 @@ require_once("dao/UserDAO.php");
 
 $message = new Message;
 
-$userDao = new UserDAO($conn, $BASE_URL);
+$userDao = new UserDAO($conn);
 
 // Resgata o tipo do formulário
 $type = filter_input(INPUT_POST, "type");
 
 // Verificação do tipo de formulário
 if ($type === "register") {
-
   $name = filter_input(INPUT_POST, "name");
   $lastname = filter_input(INPUT_POST, "lastname");
   $email = filter_input(INPUT_POST, "email");
@@ -24,13 +23,10 @@ if ($type === "register") {
 
   // Verificação de dados mínimos 
   if ($name && $lastname && $email && $password) {
-
     // Verificar se as senhas batem
     if ($password === $confirmpassword) {
-
       // Verificar se o e-mail já está cadastrado no sistema
-      if ($userDao->findByEmail($email) === false) {
-
+      if (!$userDao->findByEmail($email)) {
         $user = new User();
 
         // Criação de token e senha
@@ -47,20 +43,19 @@ if ($type === "register") {
 
         $userDao->create($user, $auth);
       } else {
-
         // Enviar uma msg de erro, usuário já existe
         Message::setMessage("Usuário já cadastrado, tente outro e-mail.", "error", "back");
+        redirect($_SERVER['HTTP_REFERER']);
       }
     } else {
-
       // Enviar uma msg de erro, de senhas não batem
-      Message::setMessage("As senhas não são iguais.", "error", "back");
+      Message::setMessage("As senhas não são iguais.", "error");
+      redirect($_SERVER['HTTP_REFERER']);
     }
   } else {
-
     // Enviar uma msg de erro, de dados faltantes
     Message::setMessage("Por favor, preencha todos os campos.", "error");
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    redirect($_SERVER['HTTP_REFERER']);
   }
 } else if ($type === "login") {
 
