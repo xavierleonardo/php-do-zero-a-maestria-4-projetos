@@ -1,13 +1,32 @@
 <?php
 class User {
-  public $id;
-  public $name;
-  public $lastname;
-  public $email;
-  public $password;
-  public $image;
-  public $bio;
-  public $token;
+  public int $id;
+  public string $image;
+  public string $bio;
+
+  public function __construct(
+    public string $name,
+    public string $lastname,
+    public string $email,
+    public string $password,
+    public string $token)
+  {
+    // $this->name = $name;  
+    // $this->lastname = $lastname;  
+    // $this->email = $email;  
+    // $this->password = $password;  
+    // $this->image = $image;  
+    // $this->bio = $bio;  
+    // $this->token = $token;  
+  }
+
+  static function generateToken() {
+    return bin2hex(random_bytes(50));
+  }
+
+  static function generatePassword($password) {
+    return password_hash($password, PASSWORD_DEFAULT);
+  }
 }
 
 interface UserDAOInterface {
