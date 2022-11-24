@@ -1,14 +1,17 @@
 <?php
+
   require_once("globals.php");
   require_once("db.php");
   require_once("models/Message.php");
   require_once("dao/UserDAO.php");
 
-  $flassMessage = Message::getMessage();
+  $message = new Message($BASE_URL);
+
+  $flassMessage = $message->getMessage();
 
   if(!empty($flassMessage["msg"])) {
     // Limpar a mensagem
-    Message::clearMessage();
+    $message->clearMessage();
   }
 
   $userDao = new UserDAO($conn, $BASE_URL);
